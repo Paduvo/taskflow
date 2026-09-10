@@ -1,24 +1,37 @@
-# TaskFlow
+#  TaskFlow
 
 API REST para gerenciamento de tarefas, desenvolvida com Java e Spring Boot.
 
-O projeto foi desenvolvido como parte do meu portfólio de Engenharia de Software, com foco no aprendizado e aplicação de conceitos de desenvolvimento backend, APIs REST, persistência de dados e arquitetura em camadas.
+O projeto foi criado com o objetivo de praticar desenvolvimento de APIs REST, persistência de dados, arquitetura em camadas, validação, DTOs, tratamento de erros, filtros e paginação.
 
-## 🚀 Tecnologias
+##  Tecnologias
 
 - Java 21
 - Spring Boot
-- Spring Web
 - Spring Data JPA
 - Hibernate
 - PostgreSQL
 - Maven
-- Jakarta Validation
-- SpringDoc OpenAPI / Swagger
+- Swagger / OpenAPI
+- Git e GitHub
 
-## 🏗️ Arquitetura
+##  Funcionalidades
 
-O projeto utiliza uma arquitetura organizada em camadas:
+- ✅ Criar tarefas
+- ✅ Listar tarefas
+- ✅ Atualizar tarefas
+- ✅ Excluir tarefas
+- ✅ Validação dos dados
+- ✅ Tratamento personalizado de erros
+- ✅ DTOs para entrada e saída da API
+- ✅ Filtro por status de conclusão
+- ✅ Paginação
+- ✅ Documentação da API com Swagger
+- ✅ Persistência em PostgreSQL
+
+##  Arquitetura
+
+O projeto utiliza uma arquitetura em camadas:
 
 ```text
 Controller
@@ -28,117 +41,105 @@ Service
 Repository
     ↓
 PostgreSQL
-Controller
 
-Responsável por receber as requisições HTTP e disponibilizar os endpoints da API.
+Além disso, utiliza DTOs para separar os dados recebidos e enviados pela API das entidades utilizadas no banco de dados.
 
-Service
+            Estrutura do projeto
 
-Responsável pelas regras de negócio e pelo gerenciamento das operações realizadas nas tarefas.
+src/main/java/com/gustavo/taskflow
+│
+├── controller
+│   └── TarefaController.java
+│
+├── dto
+│   ├── TarefaRequest.java
+│   └── TarefaResponse.java
+│
+├── entity
+│   └── Tarefa.java
+│
+├── exception
+│   ├── TarefaNaoEncontradaException.java
+│   └── TratamentoDeErros.java
+│
+├── repository
+│   └── TarefaRepository.java
+│
+└── service
+    └── TarefaService.java
 
-Repository
+                 Endpoints
 
-Responsável pela comunicação com o banco de dados através do Spring Data JPA.
-
-Entity
-
-Representa a entidade Tarefa armazenada no banco de dados.
-
-📋 Funcionalidades
-Criar tarefas
-Listar todas as tarefas
-Atualizar tarefas
-Excluir tarefas
-Validação dos dados recebidos
-Tratamento de erros
-Persistência de dados em PostgreSQL
-Documentação interativa com Swagger
-🔌 Endpoints
-Método	Endpoint	Descrição
-POST	/tarefas	Criar uma tarefa
-GET	/tarefas	Listar todas as tarefas
-PUT	/tarefas/{id}	Atualizar uma tarefa
-DELETE	/tarefas/{id}	Excluir uma tarefa
-📝 Exemplo de requisição
 Criar tarefa
+POST /tarefas
+
+Exemplo:
+
 {
   "titulo": "Estudar Spring Boot",
   "descricao": "Aprender desenvolvimento de APIs REST",
   "concluida": false
 }
-Resposta
-{
-  "id": 1,
-  "titulo": "Estudar Spring Boot",
-  "descricao": "Aprender desenvolvimento de APIs REST",
-  "concluida": false
-}
-📖 Documentação da API
+Listar tarefas
+GET /tarefas
+Filtrar por conclusão
+GET /tarefas?concluida=true
 
-O projeto utiliza Swagger/OpenAPI para documentação e testes dos endpoints.
+ou:
 
-Com a aplicação em execução, acesse:
+GET /tarefas?concluida=false
+Paginação
+GET /tarefas?page=0&size=10
+
+Também é possível combinar filtro e paginação:
+
+GET /tarefas?concluida=false&page=0&size=10
+Atualizar tarefa
+PUT /tarefas/{id}
+Excluir tarefa
+DELETE /tarefas/{id}
+
+              Swagger
+
+Com a aplicação em execução, a documentação interativa da API pode ser acessada em:
 
 http://localhost:8080/swagger-ui.html
-🗄️ Banco de dados
 
-O TaskFlow utiliza PostgreSQL para persistência dos dados.
+                Configuração
 
-A senha do banco não fica armazenada diretamente no código. O projeto utiliza a variável de ambiente:
+O projeto utiliza PostgreSQL.
+
+Configure a variável de ambiente:
 
 DB_PASSWORD
 
-Configuração utilizada:
+com a senha do usuário do PostgreSQL.
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/taskflow
-spring.datasource.username=postgres
-spring.datasource.password=${DB_PASSWORD}
+A aplicação utiliza:
+
+jdbc:postgresql://localhost:5432/taskflow
 ▶️ Como executar
-Pré-requisitos
-Java 21
-PostgreSQL
-Git
-1. Clone o projeto
-git clone https://github.com/SEU-USUARIO/taskflow.git
-2. Crie o banco de dados
 
-No PostgreSQL, crie um banco chamado:
+Clone o projeto:
 
-taskflow
-3. Configure a variável de ambiente
+git clone <URL_DO_REPOSITORIO>
 
-Configure a variável:
+Entre na pasta:
 
-DB_PASSWORD
+cd taskflow
 
-com a senha do seu usuário do PostgreSQL.
+Execute:
 
-4. Execute a aplicação
+./mvnw spring-boot:run
 
 No Windows:
 
-.\mvnw.cmd spring-boot:run
+.\mvnw spring-boot:run
 
-A API será executada em:
+            Objetivo do projeto
 
-http://localhost:8080
-🎯 Objetivos de aprendizado
+Este projeto faz parte da minha evolução prática em Engenharia de Software, com foco em desenvolvimento backend utilizando Java e Spring Boot.
 
-Este projeto foi desenvolvido para colocar em prática:
+O objetivo é aplicar conceitos estudados na graduação em projetos práticos para construção de portfólio.
 
-Desenvolvimento de APIs REST
-Java e Spring Boot
-Arquitetura em camadas
-Spring Data JPA
-Hibernate
-PostgreSQL
-Operações CRUD
-Validação de dados
-Tratamento de exceções
-Documentação de APIs
-Controle de versão com Git
-👨‍💻 Autor
-
-Gustavo Gonçalves do Prado
-
-Estudante de Engenharia de Software
+Desenvolvido por Gustavo Gonçalves do Prado.

@@ -4,8 +4,10 @@ import com.gustavo.taskflow.entity.Tarefa;
 import com.gustavo.taskflow.repository.TarefaRepository;
 import org.springframework.stereotype.Service;
 import com.gustavo.taskflow.exception.TarefaNaoEncontradaException;
-
-import java.util.List;
+import com.gustavo.taskflow.dto.TarefaRequest;
+import com.gustavo.taskflow.dto.TarefaResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class TarefaService {
@@ -16,12 +18,26 @@ public class TarefaService {
         this.tarefaRepository = tarefaRepository;
     }
 
-    public List<Tarefa> listarTodas() {
-        return tarefaRepository.findAll();
+    public Page<Tarefa> listarTodas(Boolean concluida, Pageable pageable) {
+
+    if (concluida == null) {
+        return tarefaRepository.findAll(pageable);
     }
 
-    public Tarefa criar(Tarefa tarefa) {
-    return tarefaRepository.save(tarefa);
+    return tarefaRepository.findByConcluida(concluida, pageable);
+    }
+
+   public TarefaResponse criar(TarefaRequest tarefaRequest) {
+
+    Tarefa tarefa = new Tarefa();
+
+    tarefa.setTitulo(tarefaRequest.getTitulo());
+    tarefa.setDescricao(tarefaRequest.getDescricao());
+    tarefa.setConcluida(tarefaRequest.isConcluida());
+
+    Tarefa tarefaSalva = tarefaRepository.save(tarefa);
+
+    return paraResponse(tarefaSalva);
     }
 
     public Tarefa atualizar(Long id, Tarefa tarefa) {
@@ -40,5 +56,16 @@ public class TarefaService {
     }
 
     tarefaRepository.deleteById(id);
+    }
+
+    private TarefaResponse paraResponse(Tarefa tarefa) {
+    return new TarefaResponse(
+            tarefa.getId(),
+            tarefa.getTitulo(),
+            tarefa.getDescricao(),
+            tarefa.isConcluida(),
+            tarefa.getDataCriacao()
+    );
 }
+
 }
